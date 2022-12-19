@@ -15,3 +15,16 @@ public class GameLogic : MonoBehaviour
     }
 
 }
+
+public struct Player
+{
+    Vector2 Position, Velocity;
+    int id;
+
+    public Player(Vector2 Position, Vector2 Velocity, int id)
+    {
+        this.Position = Position;
+        this.Velocity = Velocity;
+        this.id = id;
+    }
+}
