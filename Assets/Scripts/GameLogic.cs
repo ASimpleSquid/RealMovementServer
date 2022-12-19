@@ -18,6 +18,10 @@ public class GameLogic : MonoBehaviour
         //characterPositionInPercent += (characterVelocityInPercent * Time.deltaTime);
     }
 
+    public void UpdateAll(Player player)
+    {
+        players.ForEach(reciever => player.SendUpdate(reciever.id));
+    }
 }
 
 public struct Player
@@ -33,4 +37,10 @@ public struct Player
     }
 
     public override string ToString() => $"{Position.x:F5}_{Position.y:F5}_{Velocity.x:F5}_{Velocity.y:F5}_{id}";
+    
+    public void SendUpdate(int id)
+    {
+        NetworkedServerProcessing.SendMessageToClient($"{ServerToClientSignifiers.updatePlayer:D},{this}",id);
+    }
+
 }

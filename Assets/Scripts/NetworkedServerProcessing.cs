@@ -40,12 +40,14 @@ static public class NetworkedServerProcessing
 
     static public void ConnectionEvent(int clientConnectionID)
     {
+        gameLogic.players.ForEach(player => SendMessageToClient($"{ServerToClientSignifiers.connect:D},{clientConnectionID}", player.id));
         gameLogic.players.Add(new Player(clientConnectionID));
         Debug.Log("New Connection, ID == " + clientConnectionID);
     }
     static public void DisconnectionEvent(int clientConnectionID)
     {
         gameLogic.players.RemoveAll(player => player.id == clientConnectionID);
+        gameLogic.players.ForEach(player => SendMessageToClient($"{ServerToClientSignifiers.disconnect:D},{clientConnectionID}", player.id));
         Debug.Log("New Disconnection, ID == " + clientConnectionID);
     }
 
@@ -79,7 +81,10 @@ public enum ClientToServerSignifiers
 
 public enum ServerToClientSignifiers
 {
-    asd
+    asd,
+    connect,
+    disconnect,
+    updatePlayer
 }
 
 #endregion
