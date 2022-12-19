@@ -4,22 +4,26 @@ using UnityEngine;
 
 public class GameLogic : MonoBehaviour
 {
+    public List<Player> players;
+
     void Start()
     {
+        players = new List<Player>();
         NetworkedServerProcessing.SetGameLogic(this);
     }
 
     void Update()
     {
-
+        players.ForEach(player => player.Position += (player.Velocity * Time.deltaTime));
+        //characterPositionInPercent += (characterVelocityInPercent * Time.deltaTime);
     }
 
 }
 
 public struct Player
 {
-    Vector2 Position, Velocity;
-    int id;
+    public Vector2 Position, Velocity;
+    public int id;
 
     public Player(Vector2 Position, Vector2 Velocity, int id)
     {
@@ -27,4 +31,6 @@ public struct Player
         this.Velocity = Velocity;
         this.id = id;
     }
+
+    public override string ToString() => $"{Position.x:F5}_{Position.y:F5}_{Velocity.x:F5}_{Velocity.y:F5}_{id}";
 }
