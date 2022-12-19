@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,9 +16,50 @@ static public class NetworkedServerProcessing
 
         switch ((ClientToServerSignifiers)signifier)
         {
+            case ClientToServerSignifiers.movement:
+                Player player = gameLogic.players.Find(p => p.id == clientConnectionID);
+                switch ((Directions)Int32.Parse(csv[1]))
+                {
+                    case Directions.Stop:
+                        player.Velocity = Vector2.zero;
+                        break;
+                    case Directions.N:
+                        player.Velocity.x = 0;
+                        player.Velocity.y = GameLogic.CharacterSpeed;
+                        break;
+                    case Directions.NE:
+                        player.Velocity.x = GameLogic.DiagonalCharacterSpeed;
+                        player.Velocity.y = GameLogic.DiagonalCharacterSpeed;
+                        break;
+                    case Directions.E:
+                        player.Velocity.x = GameLogic.CharacterSpeed;
+                        player.Velocity.y = 0;
+                        break;
+                    case Directions.SE:
+                        player.Velocity.x = GameLogic.DiagonalCharacterSpeed;
+                        player.Velocity.y = -GameLogic.DiagonalCharacterSpeed;
+                        break;
+                    case Directions.S:
+                        player.Velocity.x = 0;
+                        player.Velocity.y = -GameLogic.CharacterSpeed;
+                        break;
+                    case Directions.SW:
+                        player.Velocity.x = -GameLogic.DiagonalCharacterSpeed;
+                        player.Velocity.y = -GameLogic.DiagonalCharacterSpeed;
+                        break;
+                    case Directions.W:
+                        player.Velocity.x = -GameLogic.CharacterSpeed;
+                        player.Velocity.y = 0;
+                        break;
+                    case Directions.NW:
+                        player.Velocity.x = -GameLogic.DiagonalCharacterSpeed;
+                        player.Velocity.y = GameLogic.DiagonalCharacterSpeed;
+                        break;
 
-
-
+                    default:
+                        break;
+                }
+                break;
 
             default:
                 break;
@@ -76,7 +118,8 @@ static public class NetworkedServerProcessing
 #region Protocol Signifiers
 public enum ClientToServerSignifiers
 {
-    asd
+    asd,
+    movement
 }
 
 public enum ServerToClientSignifiers
@@ -86,5 +129,19 @@ public enum ServerToClientSignifiers
     disconnect,
     updatePlayer
 }
+
+public enum Directions
+{ 
+    Stop,
+    N,
+    NE,
+    E,
+    SE,
+    S,
+    SW,
+    W,
+    NW
+}
+
 
 #endregion

@@ -5,6 +5,8 @@ using UnityEngine;
 public class GameLogic : MonoBehaviour
 {
     public List<Player> players;
+    public static readonly float CharacterSpeed = 0.25f;
+    public static readonly float DiagonalCharacterSpeed = Mathf.Sqrt(CharacterSpeed * CharacterSpeed + CharacterSpeed * CharacterSpeed) / 2f;
 
     void Start()
     {
