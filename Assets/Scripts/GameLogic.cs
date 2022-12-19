@@ -27,8 +27,8 @@ public struct Player
 
     public Player(Vector2 Position, Vector2 Velocity, int id)
     {
-        this.Position = Position;
-        this.Velocity = Velocity;
+        this.Position = new Vector2(0.5f,0.5f);
+        this.Velocity = Vector2.zero;
         this.id = id;
     }
 
