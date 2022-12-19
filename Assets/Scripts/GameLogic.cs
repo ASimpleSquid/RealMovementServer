@@ -16,8 +16,9 @@ public class GameLogic : MonoBehaviour
 
     void Update()
     {
-        players.ForEach(player => player.Position += (player.Velocity * Time.deltaTime));
-        //characterPositionInPercent += (characterVelocityInPercent * Time.deltaTime);
+        players.ForEach(player =>
+        { player.Position += (player.Velocity * Time.deltaTime);
+        });
     }
 
     public void UpdateAll(Player player)
@@ -26,7 +27,7 @@ public class GameLogic : MonoBehaviour
     }
 }
 
-public struct Player
+public class Player
 {
     public Vector2 Position, Velocity;
     public int id;
@@ -34,7 +35,7 @@ public struct Player
     public Player(int id)
     {
         this.Position = new Vector2(0.5f,0.5f);
-        this.Velocity = Vector2.zero;
+        this.Velocity = new Vector2(0f,0f);
         this.id = id;
     }
 

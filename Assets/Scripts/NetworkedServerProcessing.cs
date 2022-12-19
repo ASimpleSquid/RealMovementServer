@@ -17,51 +17,51 @@ static public class NetworkedServerProcessing
         switch ((ClientToServerSignifiers)signifier)
         {
             case ClientToServerSignifiers.movement:
-                Player player = gameLogic.players.Find(p => p.id == clientConnectionID);
+                int player = gameLogic.players.FindIndex(p => p.id == clientConnectionID);
 
                 switch ((Directions)Int32.Parse(csv[1]))
                 {
                     case Directions.Stop:
-                        player.Velocity = Vector2.zero;
+                        gameLogic.players[player].Velocity = Vector2.zero;
                         break;
                     case Directions.N:
-                        player.Velocity.x = 0;
-                        player.Velocity.y = GameLogic.CharacterSpeed;
+                        gameLogic.players[player].Velocity.x = 0;
+                        gameLogic.players[player].Velocity.y = GameLogic.CharacterSpeed;
                         break;
                     case Directions.NE:
-                        player.Velocity.x = GameLogic.DiagonalCharacterSpeed;
-                        player.Velocity.y = GameLogic.DiagonalCharacterSpeed;
+                        gameLogic.players[player].Velocity.x = GameLogic.DiagonalCharacterSpeed;
+                        gameLogic.players[player].Velocity.y = GameLogic.DiagonalCharacterSpeed;
                         break;
                     case Directions.E:
-                        player.Velocity.x = GameLogic.CharacterSpeed;
-                        player.Velocity.y = 0;
+                        gameLogic.players[player].Velocity.x = GameLogic.CharacterSpeed;
+                        gameLogic.players[player].Velocity.y = 0;
                         break;
                     case Directions.SE:
-                        player.Velocity.x = GameLogic.DiagonalCharacterSpeed;
-                        player.Velocity.y = -GameLogic.DiagonalCharacterSpeed;
+                        gameLogic.players[player].Velocity.x = GameLogic.DiagonalCharacterSpeed;
+                        gameLogic.players[player].Velocity.y = -GameLogic.DiagonalCharacterSpeed;
                         break;
                     case Directions.S:
-                        player.Velocity.x = 0;
-                        player.Velocity.y = -GameLogic.CharacterSpeed;
+                        gameLogic.players[player].Velocity.x = 0;
+                        gameLogic.players[player].Velocity.y = -GameLogic.CharacterSpeed;
                         break;
                     case Directions.SW:
-                        player.Velocity.x = -GameLogic.DiagonalCharacterSpeed;
-                        player.Velocity.y = -GameLogic.DiagonalCharacterSpeed;
+                        gameLogic.players[player].Velocity.x = -GameLogic.DiagonalCharacterSpeed;
+                        gameLogic.players[player].Velocity.y = -GameLogic.DiagonalCharacterSpeed;
                         break;
                     case Directions.W:
-                        player.Velocity.x = -GameLogic.CharacterSpeed;
-                        player.Velocity.y = 0;
+                        gameLogic.players[player].Velocity.x = -GameLogic.CharacterSpeed;
+                        gameLogic.players[player].Velocity.y = 0;
                         break;
                     case Directions.NW:
-                        player.Velocity.x = -GameLogic.DiagonalCharacterSpeed;
-                        player.Velocity.y = GameLogic.DiagonalCharacterSpeed;
+                        gameLogic.players[player].Velocity.x = -GameLogic.DiagonalCharacterSpeed;
+                        gameLogic.players[player].Velocity.y = GameLogic.DiagonalCharacterSpeed;
                         break;
 
                     default:
                         break;
                 }
 
-                gameLogic.UpdateAll(player);
+                gameLogic.UpdateAll(gameLogic.players[player]);
                 break;
 
             default:
@@ -78,15 +78,22 @@ static public class NetworkedServerProcessing
         networkedServer.SendMessageToClientWithSimulatedLatency(msg, clientConnectionID);
     }
 
-    
+
     #endregion
 
     #region Connection Events
 
     static public void ConnectionEvent(int clientConnectionID)
     {
-        gameLogic.players.ForEach(player => SendMessageToClient($"{ServerToClientSignifiers.connect:D},{clientConnectionID}", player.id));
+        gameLogic.players.ForEach(player =>
+        {
+            SendMessageToClient($"{ServerToClientSignifiers.connect:D},{player.id}", clientConnectionID);
+        });
         gameLogic.players.Add(new Player(clientConnectionID));
+        gameLogic.players.ForEach(player =>
+        {
+            SendMessageToClient($"{ServerToClientSignifiers.connect:D},{clientConnectionID}", player.id);
+        });
         Debug.Log("New Connection, ID == " + clientConnectionID);
     }
     static public void DisconnectionEvent(int clientConnectionID)
