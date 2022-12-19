@@ -40,11 +40,12 @@ static public class NetworkedServerProcessing
 
     static public void ConnectionEvent(int clientConnectionID)
     {
-
+        gameLogic.players.Add(new Player(clientConnectionID));
         Debug.Log("New Connection, ID == " + clientConnectionID);
     }
     static public void DisconnectionEvent(int clientConnectionID)
     {
+        gameLogic.players.RemoveAll(player => player.id == clientConnectionID);
         Debug.Log("New Disconnection, ID == " + clientConnectionID);
     }
 

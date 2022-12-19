@@ -25,7 +25,7 @@ public struct Player
     public Vector2 Position, Velocity;
     public int id;
 
-    public Player(Vector2 Position, Vector2 Velocity, int id)
+    public Player(int id)
     {
         this.Position = new Vector2(0.5f,0.5f);
         this.Velocity = Vector2.zero;
