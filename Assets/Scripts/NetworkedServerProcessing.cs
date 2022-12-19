@@ -18,6 +18,7 @@ static public class NetworkedServerProcessing
         {
             case ClientToServerSignifiers.movement:
                 Player player = gameLogic.players.Find(p => p.id == clientConnectionID);
+
                 switch ((Directions)Int32.Parse(csv[1]))
                 {
                     case Directions.Stop:
@@ -59,6 +60,8 @@ static public class NetworkedServerProcessing
                     default:
                         break;
                 }
+
+                gameLogic.UpdateAll(player);
                 break;
 
             default:
